@@ -131,7 +131,8 @@ public class BlitzIOPublisher extends Recorder {
         String username = getDescriptor().getUserID();
         String apiKey = getDescriptor().getKey();
         String serverHost = "blitz.io";
-        Integer port = 80;
+        Integer port = 443;
+        String protocol = "https";
         String sprint = getSprint();
         String rush = getRush();
         String rushPattern = "";
@@ -162,7 +163,7 @@ public class BlitzIOPublisher extends Recorder {
         try {
             if(getRunSprint() && sprint.length() > 0 && respTime > 0){
                 AbstractTest test = io.blitz.command.Curl.parse(username, apiKey,
-                        serverHost, port, sprint);
+                        serverHost, port, sprint, protocol);
 
                 test.addListener(sprintLisener);
                 test.execute();
@@ -172,7 +173,7 @@ public class BlitzIOPublisher extends Recorder {
 
             if(getRunRush() && rush.length() > 0 && errRate > 0){
                 AbstractTest test = io.blitz.command.Curl.parse(username, apiKey,
-                        serverHost, port, rush);
+                        serverHost, port, rush, protocol);
                 Pattern pattern = ((Rush)test).getPattern();
                 rushPattern = JsonConverter.toJson(pattern);
                 test.addListener(rushLisener);
